@@ -1,3 +1,5 @@
 - to revert back to an older version after changing code
 - You can maintain multiple versions of the same project
 - So you can submit changes to someone else's code
+- So you can review the history of some code
+- SO you can share your code and lat other people work on it
