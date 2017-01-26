@@ -1,0 +1,3 @@
+- to revert back to an older version after changing code
+- You can maintain multiple versions of the same project
+- So you can submit changes to someone else's code
