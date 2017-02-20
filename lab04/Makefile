@@ -14,7 +14,7 @@ CFLAGS=-c -Wall -Wextra
 HEADERS=crossword.h
 
 # All of the object files to produce as intermediary work
-OBJECTS=crossword.o
+OBJECTS=crossword.o dynamic_2d_array.o
 
 # The final program to build
 EXECUTABLE=crossword
