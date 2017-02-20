@@ -1,6 +1,9 @@
 // Multi-dimensional array code based on FAQ at:
 // http://c-faq.com/aryptr/dynmuldimary.html
 
+// Dominic Lesaca
+// d_lesaca@u.pacific.edu
+
 #include <stdio.h>   // Allows printf, ...
 #include <string.h>
 #include <stdlib.h>  // Allows malloc, ...
