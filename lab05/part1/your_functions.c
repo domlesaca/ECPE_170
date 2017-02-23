@@ -88,28 +88,74 @@ void mergeSort_merge(int array_start[], int temp[], int left, int mid, int right
 //2. Once binary tree is constructed, perform in-order traversal of the binary tree (HINT: use recursion).
 //FILL in the functions: inorder, insert_element, and tree_sort for sorting.
 
-void inorder(struct BTreeNode *node)
-{
+void inorder(struct BTreeNode *node, int *array, int *location) {
 	//Recursive In-order traversal: leftchild, element, rightchild
-
+	
+	if(node == NULL) {return;}
+	if((*node).leftnode != NULL){
+		inorder((*node).leftnode, array, location);
+	}
+	array[*location] = (*node).element;
+	(*location)++;
+	if((*node).rightnode != NULL){
+		inorder((*node).rightnode, array, location);
+	}
+	
 }
 
-void insert_element(struct BTreeNode **node, int element)
-{
-
+void insert_element(struct BTreeNode **node, int element) {
+	struct BTreeNode *newNode = (struct BTreeNode*)malloc(sizeof(struct BTreeNode));
+	(*newNode).element = element;
+	if(element < (**node).element){
+		if((**node).leftnode == NULL){//if this has no left child
+			(**node).leftnode = newNode;
+		}
+		else{
+			insert_element(&((**node).leftnode), element);
+		}
+	}
+	else{
+		if((**node).rightnode == NULL){
+			(**node).rightnode = newNode;
+		}
+		else{
+			insert_element(&((**node).rightnode), element);
+		}
+	}
 }
 
-void free_btree(struct BTreeNode **node)
-{
-
+void free_btree(struct BTreeNode **node) {
+	if(node == NULL) {return;}
+	if((**node).leftnode == NULL && (**node).rightnode == NULL){
+		free(*node);
+	}
+	else {
+		if((**node).leftnode != NULL){
+			free_btree(&(**node).leftnode);
+		}
+		if((**node).rightnode != NULL){
+			free_btree(&(**node).rightnode);
+		}
+	}
 }
 
-void tree_sort(int *array, int size)
-{
-
+void tree_sort(int *array, int size) {
+	struct BTreeNode arrayTree =
+	{.leftnode = NULL, .rightnode = NULL, .element = array[0]};
+	struct BTreeNode *arrayTreePointer = &arrayTree;
+	for (int i = 1; i < size; i++){
+		insert_element((&arrayTreePointer), array[i]);
+	}
+	
+	int location = 0;
+	inorder(arrayTreePointer, array, &location);
+	
+	free_btree(&(arrayTreePointer));
+	
 //1. Construct the binary tree using elements in array
 //2. Traverse the binary tree in-order and update the array
 //3. Free the binary tree
 }
+
 
 
