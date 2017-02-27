@@ -6,7 +6,7 @@ CC=gcc
 #   -c :    Only compile (don't link)
 #   -Wall:  Enable all warnings about lazy / dangerous C programming 
 #   -std=c99: Using newer C99 version of C programming language
-CFLAGS=-c -Wall -std=c99
+CFLAGS=-c -Wall -std=c99 -g
 
 # All of the .h header files to use as dependencies
 HEADERS=helper_functions.h your_functions.h
