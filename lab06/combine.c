@@ -37,7 +37,17 @@ void combine2(vec_ptr v, data_t *dest)
   printf("Added optimization: Code motion\n");
 
   // XXX - STUDENT CODE GOES HERE - XXX
+  long int length = vec_length(v);
+  long int i;
 
+  *dest = IDENT;
+
+  for(i=0; i < length; i++)
+    {
+      data_t val;
+      get_vec_element(v, i, &val);
+      *dest = *dest OP val;
+    }
 }
 
 
@@ -53,7 +63,17 @@ void combine3(vec_ptr v, data_t *dest)
   printf("Added optimization: Reducing procedure calls\n"); 
 
   // XXX - STUDENT CODE GOES HERE - XXX
+  long int length = vec_length(v);
+  data_t *val;
+  val = get_vec_start(v);
+  long int i;
 
+  *dest = IDENT;
+
+  for(i=0; i < length; i++)
+    {
+      *dest = *dest OP *(val + i);
+    }
 }
 
 
@@ -70,7 +90,20 @@ void combine4(vec_ptr v, data_t *dest)
   printf("Added optimization: Eliminating unneeded memory accesses\n");
 
   // XXX - STUDENT CODE GOES HERE - XXX
+  long int length = vec_length(v);
+  data_t *val;
+  val = get_vec_start(v);
+  
+  long int i;
 
+  data_t accumulate = IDENT;
+
+  for(i=0; i < length; i++)
+    {
+      accumulate = accumulate OP *(val + i);
+    }
+    
+    *dest = accumulate;
 }
 
 
@@ -82,7 +115,20 @@ void combine5x2(vec_ptr v, data_t *dest)
   printf("Added optimization: Loop unrolling x2\n");
 
   // XXX - STUDENT CODE GOES HERE - XXX
+  long int length = vec_length(v);
+  data_t *val;
+  val = get_vec_start(v);
+  
+  long int i;
 
+  data_t accumulate = IDENT;
+
+  for(i=0; i < length-1; i=i+2)
+    {
+      accumulate = (accumulate OP *(val + i)) OP *(val + i + 1);
+    }
+    
+    *dest = accumulate;
 }
 
 // LOOP UNROLLING x3
@@ -93,7 +139,20 @@ void combine5x3(vec_ptr v, data_t *dest)
   printf("Added optimization: Loop unrolling x3\n");
 
   // XXX - STUDENT CODE GOES HERE - XXX
+  long int length = vec_length(v);
+  data_t *val;
+  val = get_vec_start(v);
+  
+  long int i;
 
+  data_t accumulate = IDENT;
+
+  for(i=0; i < length-2; i=i+3)
+    {
+      accumulate = ((accumulate OP *(val + i)) OP *(val + i + 1)) OP *(val + i + 2);
+    }
+    
+    *dest = accumulate;
 }
 
 
@@ -104,5 +163,20 @@ void combine6(vec_ptr v, data_t *dest)
   printf("Added optimization: Loop unrolling x2, Parallelism x2\n");
 
   // XXX - STUDENT CODE GOES HERE - XXX
+  long int length = vec_length(v);
+  data_t *val;
+  val = get_vec_start(v);
+  
+  long int i;
 
+  data_t accumulate0 = IDENT;
+  data_t accumulate1 = IDENT;
+
+  for(i=0; i < length-1; i = i+2)
+    {
+      accumulate0 = accumulate0 OP *(val + i);
+      accumulate1 = accumulate1 OP *(val + i + 1);
+    }
+    
+    *dest = accumulate1 + accumulate0;
 }

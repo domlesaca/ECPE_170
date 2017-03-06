@@ -6,7 +6,7 @@ CC=gcc
 #   -c :    Only compile (don't link)
 #   -Wall:  Enable all warnings about lazy / dangerous C programming 
 #   -std=c99: Using newer C99 version of C programming language
-CFLAGS=-c -Wall -std=c99 -O1
+CFLAGS=-c -Wall -std=c99 -O3
 
 # All of the .h header files to use as dependencies
 HEADERS=config.h combine.h vec.h
