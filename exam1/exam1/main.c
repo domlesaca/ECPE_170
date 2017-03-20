@@ -70,7 +70,6 @@ int main()
       // Get another line
       line = NULL; // Force getline() to allocate new buffer for line
       read = getline(&line, &length, fp);
-      free(line);
     }
   free(line); // getline() allocates an empty buffer
               // at end-of-file, which is useless to us.
