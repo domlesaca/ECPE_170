@@ -1,0 +1,10 @@
+Script started on Wed 29 Mar 2017 11:15:09 PM PDT
+GET /about/ HTTP/1.1
+
+Host: www.google.com
+
+Connection: close
+
+netcat: getaddrinfo: Name or service not known
+
+Script done on Wed 29 Mar 2017 11:15:24 PM PDT

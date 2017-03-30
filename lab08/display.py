@@ -81,7 +81,9 @@ print("Preparing to download object from http://" + host + path + filename)
 #      must be provided at the end of the HTTP client request
 #      to the server? (otherwise, the server won't begin processing)
 # *****************************
-
+httpRequest = ('GET '+path+filename+' HTTP/1.1\r\nHost: '+
+               host+'\r\nConnection: close\r\n\r\n')
+print('request: ', httpRequest)
 
 
 
@@ -94,6 +96,27 @@ print("Preparing to download object from http://" + host + path + filename)
 #      to convert a unicode string to a byte array
 #      prior to transmitting it.
 # *****************************
+try:
+    tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+except socket.error as error:
+    print('ERROR:  couldnt create socket')
+    print('Description:  ', str(error))
+    sys.exit()
+
+try:
+    tcpSocket.connect((host, port))
+except socket.error as error:
+    print('ERROR:  couldnt make connection')
+    print('Description: ', str(error))
+    sys.exit()
+
+byte_array = bytes(httpRequest, 'ascii')
+try:
+    tcpSocket.sendall(byte_array)
+except socket.error as error:
+    print('ERROR:  failed to send bytes')
+    print('Description:  ', str(error))
+    sys.exit()
 
 
 
@@ -110,7 +133,25 @@ print("Preparing to download object from http://" + host + path + filename)
 #      (i.e. no bytes received)
 #  (6) Close the socket - finished with the network now
 # *****************************
+res = b''
 
+try:
+    while 1>0:
+        byte_array = tcpSocket.recv(max_recv)
+        if len(byte_array) <= 0:
+            break;
+        res += byte_array
+except socket.error as error:
+    print('ERROR:  failed to receive bytes from host')
+    print('Description:  ', str(error))
+    sys.exit()
+
+try:
+    tcpSocket.close()
+except socket.error as error:
+    print('ERROR:  failed close the socket')
+    print('Description:  ', str(error))
+    sys.exit()
 
 
 
@@ -127,7 +168,11 @@ print("Preparing to download object from http://" + host + path + filename)
 #      in the /tmp directory would be a great spot.
 # *****************************
 
-
+head, data = res.split(b'\r\n\r\n', maxsplit=1)
+print('response:\n', head.decode('ascii'))
+saved_filename = '/tmp/'+filename
+with open(saved_filename, 'wb') as f:
+    f.write(data)
 
 
 
